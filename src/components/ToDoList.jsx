@@ -1,9 +1,11 @@
 import { createEffect, createResource, createSignal } from "solid-js";
 import { getReq } from "../../utils/api";
+import { useDark } from "./DarkContext";
 import { useUser } from "./UserContext";
 
 const fetchToDos = async () => {
   const [user] = useUser();
+  const [dark] = useDark();
   return await getReq(`/todo/${user().email}`);
 };
 
@@ -18,9 +20,15 @@ export default function ToDoList() {
       </p>
       <ul>
         <For each={toDos()}>
-          {(toDo) => (
-            <li>
-              <p>{toDo.description}</p>
+          {(toDo, index) => (
+            <li
+              onClick={() =>
+                console.log(
+                  `clicked ${index()} --- ${toDos()[index()].description}`
+                )
+              }
+            >
+              {toDo.description}
             </li>
           )}
         </For>

@@ -1,6 +1,8 @@
 import { useNavigate } from "solid-app-router";
+import { Button, Form } from "solid-bootstrap";
 import { createSignal, useContext } from "solid-js";
 import { getReq } from "../../utils/api";
+import FormInput from "./FormInput";
 import { useUser } from "./UserContext";
 
 export default function LoginForm() {
@@ -12,9 +14,7 @@ export default function LoginForm() {
   const onLoginPress = async (e) => {
     try {
       e.preventDefault();
-      console.log("Trying");
       const result = await getReq(`/login/${email()}/${password()}`);
-      console.log(result);
       setUser(result);
       navigate("/home");
     } catch (err) {
@@ -28,24 +28,28 @@ export default function LoginForm() {
 
   return (
     <div>
-      <form onSubmit={onLoginPress}>
-        <label for="email">Email</label>
-        <input
-          type="text"
-          id="email"
+      <Form onSubmit={onLoginPress}>
+        <FormInput
+          controlId="emailInput"
+          label="Email address"
+          type="email"
+          placeholder="Enter email"
           onBlur={(e) => setEmail(e.target.value)}
-          value={email()}
         />
-        <label for="password">Password</label>
-        <input
-          type="text"
-          id="password"
+        <FormInput
+          controlId="passwordInput"
+          label="Password"
+          type="password"
+          placeholder="Enter password"
           onBlur={(e) => setPassword(e.target.value)}
-          value={password()}
         />
-        <button type="submit">Submit</button>
-      </form>
-      <button onClick={onSignUpPress}>Sign Up</button>
+        <Button variant="primary" type="submit">
+          Login
+        </Button>
+      </Form>
+      <Button variant="outline-secondary" size="sm" onClick={onSignUpPress}>
+        Don't have an account? Create one
+      </Button>
     </div>
   );
 }
