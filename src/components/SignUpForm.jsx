@@ -1,19 +1,22 @@
 import { useNavigate } from "solid-app-router";
 import { createSignal, useContext } from "solid-js";
-import { getReq } from "../../utils/api";
+import { postReq } from "../../utils/api";
 import { useUser } from "./UserContext";
 
-export default function LoginForm() {
+export default function SignUpForm() {
   const [email, setEmail] = createSignal("");
   const [password, setPassword] = createSignal("");
-  const [user, setUser] = useUser();
+  const [confirmPass, setConfirmPass] = createSignal("");
+  const [setUser] = useUser();
   const navigate = useNavigate();
 
-  const onLoginPress = async (e) => {
+  const onSignUpPress = async (e) => {
     try {
       e.preventDefault();
-      console.log("Trying");
-      const result = await getReq(`/login/${email()}/${password()}`);
+      const result = await postReq(`/signup`, {
+        email: email(),
+        password: password()
+      });
       console.log(result);
       setUser(result);
       navigate("/home");
@@ -22,13 +25,13 @@ export default function LoginForm() {
     }
   };
 
-  const onSignUpPress = () => {
-    navigate("/signup");
+  const returnToLoginPress = () => {
+    navigate("/");
   };
 
   return (
     <div>
-      <form onSubmit={onLoginPress}>
+      <form onSubmit={onSignUpPress}>
         <label for="email">Email</label>
         <input
           type="text"
@@ -43,9 +46,16 @@ export default function LoginForm() {
           onBlur={(e) => setPassword(e.target.value)}
           value={password()}
         />
+        <label for="password">Confirm Password</label>
+        <input
+          type="text"
+          id="password"
+          onBlur={(e) => setConfirmPass(e.target.value)}
+          value={confirmPass()}
+        />
         <button type="submit">Submit</button>
       </form>
-      <button onClick={onSignUpPress}>Sign Up</button>
+      <button onClick={returnToLoginPress}>Return to Login</button>
     </div>
   );
 }

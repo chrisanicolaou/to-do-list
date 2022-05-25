@@ -3,6 +3,7 @@ import styles from "./App.module.css";
 import { Route, Routes } from "solid-app-router";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
+import SignUp from "./pages/SignUp";
 
 export default function App() {
   return (
@@ -11,6 +12,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/home" element={<Home />} />
+        <Route path="/signup" element={<SignUp />} />
       </Routes>
     </div>
   );

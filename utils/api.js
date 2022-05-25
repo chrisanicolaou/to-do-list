@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const toDoApi = axios.create({
-  baseURL: "https://dotnet-to-do-api.herokuapp.com/api",
+  baseURL: "https://dotnet-to-do-api.herokuapp.com/api"
 });
 
 export const getReq = async (path) => {
