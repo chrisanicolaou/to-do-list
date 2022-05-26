@@ -1,4 +1,5 @@
 import { useNavigate } from "solid-app-router";
+import { Button } from "solid-bootstrap";
 import { createEffect, Suspense, useContext } from "solid-js";
 import { redirect } from "../../utils/helpers";
 import ToDoList from "../components/ToDoList";
@@ -13,14 +14,17 @@ export default function Home() {
 
   const userLogOut = () => {
     setUser("");
+    localStorage.removeItem("user");
+    navigation("/");
   };
 
   return (
     <div>
-      <h1>{user().email}</h1>
       <h1>My To-Dos</h1>
       <ToDoList />
-      <button onClick={userLogOut}>Logout</button>
+      <Button variant="primary" size="sm" onClick={userLogOut}>
+        Log Out
+      </Button>
     </div>
   );
 }

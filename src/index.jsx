@@ -9,13 +9,13 @@ import { DarkProvider } from "./components/DarkContext";
 
 render(
   () => (
-    <UserProvider user={""}>
-      <DarkProvider dark={false}>
-        <Router>
+    <Router>
+      <UserProvider user={""}>
+        <DarkProvider dark={false}>
           <App />
-        </Router>
-      </DarkProvider>
-    </UserProvider>
+        </DarkProvider>
+      </UserProvider>
+    </Router>
   ),
   document.getElementById("root")
 );

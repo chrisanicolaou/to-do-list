@@ -22,6 +22,7 @@ export default function LoginForm() {
       await checkEmptyFields({ email: email(), password: password() });
       const result = await getReq(`/login/${email()}/${password()}`);
       setUser(result);
+      localStorage.setItem("user", JSON.stringify(result));
       navigate("/home");
     } catch (err) {
       console.log(err);

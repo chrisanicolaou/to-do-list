@@ -14,6 +14,11 @@ export const patchReq = async (path, dataToPatch) => {
   return res.data;
 };
 
+export const putReq = async (path, dataToPut) => {
+  const res = await toDoApi.put(path, dataToPut);
+  return res.data;
+};
+
 export const postReq = async (path, dataToPost) => {
   const res = await toDoApi.post(path, dataToPost);
   return res.data;

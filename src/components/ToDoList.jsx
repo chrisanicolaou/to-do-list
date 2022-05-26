@@ -1,5 +1,7 @@
+import { ListGroup, ListGroupItem } from "solid-bootstrap";
 import { createEffect, createResource, createSignal } from "solid-js";
-import { getReq } from "../../utils/api";
+import { createStore } from "solid-js/store";
+import { getReq, putReq } from "../../utils/api";
 import { useDark } from "./DarkContext";
 import { useUser } from "./UserContext";
 
@@ -10,29 +12,46 @@ const fetchToDos = async () => {
 };
 
 export default function ToDoList() {
-  const [toDos] = createResource(fetchToDos);
+  const [toDosFromApi] = createResource(fetchToDos);
+  const [toDos, setToDos] = createStore([]);
+
+  createEffect(() => {
+    console.log(localStorage.getItem("user"));
+    if (!toDosFromApi.loading) {
+      setToDos(toDosFromApi());
+    }
+  });
+
+  const updateToDoActive = async (toDo, index, value) => {
+    setToDos([index], "isActive", value);
+    await putReq(`/todo/${toDo.toDoId}`, { isActive: value });
+  };
 
   return (
     <div>
-      <p>{toDos.loading && "Loading your To-Do's..."}</p>
+      <p>{toDosFromApi.loading && "Loading your To-Do's..."}</p>
       <p>
-        {!toDos.loading && toDos().length === 0 && "You have nothing to do!"}
+        {!toDosFromApi.loading &&
+          toDosFromApi().length === 0 &&
+          "You have nothing to do!"}
       </p>
-      <ul>
-        <For each={toDos()}>
+      <ListGroup as="ul">
+        <For each={toDos}>
           {(toDo, index) => (
-            <li
-              onClick={() =>
-                console.log(
-                  `clicked ${index()} --- ${toDos()[index()].description}`
-                )
-              }
+            <ListGroupItem
+              as="li"
+              action
+              onClick={() => updateToDoActive(toDo, [index()], !toDo.isActive)}
             >
-              {toDo.description}
-            </li>
+              {toDo.isActive ? (
+                toDo.description
+              ) : (
+                <strike>{toDo.description}</strike>
+              )}
+            </ListGroupItem>
           )}
         </For>
-      </ul>
+      </ListGroup>
     </div>
   );
 }
