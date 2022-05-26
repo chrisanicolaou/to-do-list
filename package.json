@@ -17,6 +17,7 @@
     "axios": "^0.27.2",
     "solid-app-router": "^0.3.3",
     "solid-bootstrap": "^1.0.8",
+    "solid-icons": "^0.4.11",
     "solid-js": "^1.4.2"
   }
 }

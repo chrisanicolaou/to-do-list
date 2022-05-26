@@ -10,7 +10,7 @@ const fetchToDos = async () => {
 };
 
 export default function ToDoList() {
-  const [toDos] = createResource(true, fetchToDos);
+  const [toDos] = createResource(fetchToDos);
 
   return (
     <div>

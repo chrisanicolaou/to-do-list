@@ -9,3 +9,12 @@ export const redirect = () => {
     navigation("/");
   }
 };
+
+export const checkEmptyFields = (obj) => {
+  for (let key in obj) {
+    if (!obj[key]) {
+      console.log("rejecting");
+      return Promise.reject(key);
+    }
+  }
+};

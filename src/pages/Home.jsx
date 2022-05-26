@@ -1,6 +1,6 @@
 import { useNavigate } from "solid-app-router";
 import { createEffect, Suspense, useContext } from "solid-js";
-import { redirect } from "../../utils/redirect";
+import { redirect } from "../../utils/helpers";
 import ToDoList from "../components/ToDoList";
 import { UserContext } from "../components/UserContext";
 
