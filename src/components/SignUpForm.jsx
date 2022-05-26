@@ -2,9 +2,8 @@ import { useNavigate } from "solid-app-router";
 import { Button, Form, FormText } from "solid-bootstrap";
 import { createSignal, useContext } from "solid-js";
 import { postReq } from "../../utils/api";
-import { useUser } from "./UserContext";
 import styles from "../App.module.css";
-import { checkEmptyFields } from "../../utils/helpers";
+import { checkEmptyFields, setToUserStorage } from "../../utils/helpers";
 
 export default function SignUpForm() {
   const [email, setEmail] = createSignal("");
@@ -16,7 +15,6 @@ export default function SignUpForm() {
     passwordErr: "",
     confirmPassErr: ""
   });
-  const [setUser] = useUser();
   const navigate = useNavigate();
 
   const onSignUpPress = async (e) => {
@@ -29,10 +27,9 @@ export default function SignUpForm() {
       });
       const result = await postReq(`/signup`, {
         email: email(),
-        password: password(),
-        confirmPass: confirmPass()
+        password: password()
       });
-      setUser(result);
+      setToUserStorage(result);
       navigate("/home");
     } catch (err) {
       console.log(err);

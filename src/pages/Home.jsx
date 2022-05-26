@@ -1,19 +1,17 @@
 import { useNavigate } from "solid-app-router";
 import { Button } from "solid-bootstrap";
 import { createEffect, Suspense, useContext } from "solid-js";
-import { redirect } from "../../utils/helpers";
+import { redirect, useUser } from "../../utils/helpers";
 import ToDoList from "../components/ToDoList";
-import { UserContext } from "../components/UserContext";
 
 export default function Home() {
-  const [user, setUser] = useContext(UserContext);
   const navigation = useNavigate();
+  const [user, setUser] = useUser();
   createEffect(() => {
     redirect();
   });
 
   const userLogOut = () => {
-    setUser("");
     localStorage.removeItem("user");
     navigation("/");
   };
