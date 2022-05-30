@@ -12,10 +12,10 @@ function AddToDoForm({ setIsAdding, setToDos, toDos }) {
     const dateCreated = Date.now().toString();
     const toDoToPost = {
       description: toDoItem(),
-      isActive: true,
       userEmail: user.email,
       dateCreated: dateCreated,
-      dateUpdated: dateCreated
+      dateUpdated: dateCreated,
+      arrayIndex: toDos.length
     };
     const currToDos = [...toDos];
     setToDos((curr) => [...curr, toDoToPost]);

@@ -4,6 +4,7 @@ import { createEffect, createSignal, Suspense, useContext } from "solid-js";
 import { createStore } from "solid-js/store";
 import { redirect, useUser } from "../../utils/helpers";
 import AddToDoForm from "../components/AddToDoForm";
+import SortableTest from "../components/SortableTest";
 import ToDoList from "../components/ToDoList";
 
 export default function Home() {
@@ -11,6 +12,7 @@ export default function Home() {
   const [user, setUser] = useUser();
   const [toDos, setToDos] = createStore([]);
   const [isAdding, setIsAdding] = createSignal(false);
+  console.log(toDos);
   createEffect(() => {
     redirect();
   });
@@ -40,5 +42,6 @@ export default function Home() {
         Log Out
       </Button>
     </div>
+    // <SortableTest toDos={toDos} />
   );
 }
