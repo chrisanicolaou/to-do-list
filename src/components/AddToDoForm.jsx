@@ -3,7 +3,7 @@ import { createSignal } from "solid-js";
 import { postReq } from "../../utils/api";
 import { useUser } from "../../utils/helpers";
 
-function AddToDoForm({ setIsAdding, setToDos }) {
+function AddToDoForm({ setIsAdding, setToDos, toDos }) {
   const [toDoItem, setToDoItem] = createSignal();
   const [user, setUser] = useUser();
 
@@ -17,10 +17,11 @@ function AddToDoForm({ setIsAdding, setToDos }) {
       dateCreated: dateCreated,
       dateUpdated: dateCreated
     };
+    const currToDos = [...toDos];
     setToDos((curr) => [...curr, toDoToPost]);
     setIsAdding(false);
     const result = await postReq(`/todo`, toDoToPost);
-    console.log(result);
+    setToDos([...currToDos, result]);
   };
 
   return (

@@ -22,6 +22,7 @@ export default function ToDoList({ toDos, setToDos }) {
 
   const updateToDoActive = async (toDo, index, value) => {
     setToDos([index], "isActive", value);
+    console.log(`/todo/${toDo.toDoId}`);
     await putReq(`/todo/${toDo.toDoId}`, { isActive: value });
   };
 

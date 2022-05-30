@@ -30,7 +30,11 @@ export default function Home() {
         </Button>
       )}
       {isAdding() ? (
-        <AddToDoForm setIsAdding={setIsAdding} setToDos={setToDos} />
+        <AddToDoForm
+          setIsAdding={setIsAdding}
+          setToDos={setToDos}
+          toDos={toDos}
+        />
       ) : null}
       <Button variant="primary" size="sm" onClick={userLogOut}>
         Log Out
