@@ -12,7 +12,6 @@ export default function Home() {
   const [user, setUser] = useUser();
   const [toDos, setToDos] = createStore([]);
   const [isAdding, setIsAdding] = createSignal(false);
-  console.log(toDos);
   createEffect(() => {
     redirect();
   });

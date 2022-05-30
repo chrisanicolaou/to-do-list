@@ -15,7 +15,8 @@ function AddToDoForm({ setIsAdding, setToDos, toDos }) {
       userEmail: user.email,
       dateCreated: dateCreated,
       dateUpdated: dateCreated,
-      arrayIndex: toDos.length
+      arrayIndex: toDos.length + 1,
+      isActive: true
     };
     const currToDos = [...toDos];
     setToDos((curr) => [...curr, toDoToPost]);

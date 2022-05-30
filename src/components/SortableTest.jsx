@@ -10,7 +10,7 @@ import { createSignal, For } from "solid-js";
 import { createStore } from "solid-js/store";
 
 const Sortable = (props) => {
-  const sortable = createSortable(props.item.toDoId, props.item);
+  const sortable = createSortable(props.item.toDoId + 1, props.item);
   return (
     <div
       use:sortable
@@ -25,24 +25,24 @@ const Sortable = (props) => {
 export const SortableTest = (props) => {
   const [items, setItems] = createStore([
     {
-      toDoId: 4,
+      toDoId: 0,
       description: "Lorem Ipsum4"
     },
     {
-      toDoId: 12,
+      toDoId: 1,
       description: "Lorem Ipsum12"
     },
     {
-      toDoId: 1,
+      toDoId: 2,
       description: "Lorem Ipsum1"
     },
     {
-      toDoId: 20,
+      toDoId: 3,
       description: "Lorem Ipsum20"
     }
   ]);
   const [activeItem, setActiveItem] = createSignal(null);
-  const ids = () => items.map((item) => item.toDoId);
+  const ids = () => items.map((item) => item.toDoId + 1);
 
   const onDragStart = ({ draggable }) => setActiveItem(draggable.toDoId);
 

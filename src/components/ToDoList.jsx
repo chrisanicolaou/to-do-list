@@ -77,7 +77,7 @@ export default function ToDoList(props) {
     setActiveItem(draggable.arrayIndex);
   };
 
-  const onDragEnd = async ({ draggable, droppable }) => {
+  const onDragEnd = ({ draggable, droppable }) => {
     if (draggable && droppable) {
       const currToDos = [...props.toDos];
       const fromIndex = currToDos.findIndex(
@@ -86,13 +86,13 @@ export default function ToDoList(props) {
       const toIndex = currToDos.findIndex(
         (toDo) => toDo.arrayIndex === droppable.id
       );
-      console.log(fromIndex, toIndex);
+      console.log(draggable, droppable);
       if (fromIndex !== toIndex) {
         const updatedToDos = currToDos.slice();
         updatedToDos.splice(toIndex, 0, ...updatedToDos.splice(fromIndex, 1));
         props.setToDos(updatedToDos);
         updatedToDos.forEach((toDo, index) => {
-          putReq(`/todo/${toDo.toDoId}`, { arrayIndex: index });
+          putReq(`/todo/${toDo.toDoId}`, { arrayIndex: index + 1 });
         });
       }
     }
