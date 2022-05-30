@@ -1,6 +1,5 @@
 import { ListGroup, ListGroupItem } from "solid-bootstrap";
 import { createEffect, createResource, createSignal } from "solid-js";
-import { createStore } from "solid-js/store";
 import { getReq, putReq } from "../../utils/api";
 import { redirect, useUser } from "../../utils/helpers";
 import { useDark } from "./DarkContext";
@@ -10,10 +9,9 @@ const fetchToDos = async () => {
   return await getReq(`/todo/${user.email}`);
 };
 
-export default function ToDoList() {
+export default function ToDoList({ toDos, setToDos }) {
   const [dark] = useDark();
   const [toDosFromApi] = createResource(fetchToDos);
-  const [toDos, setToDos] = createStore([]);
 
   createEffect(() => {
     redirect();
@@ -42,6 +40,7 @@ export default function ToDoList() {
               as="li"
               action
               onClick={() => updateToDoActive(toDo, [index()], !toDo.isActive)}
+              draggable="true"
             >
               {toDo.isActive ? (
                 toDo.description
