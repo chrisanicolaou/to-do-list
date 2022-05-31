@@ -49,10 +49,12 @@ export default function LoginForm() {
       <Form onSubmit={onLoginPress}>
         <Form.Group class="mb-3" controlId="emailInput">
           <Form.Label>Email address</Form.Label>
-          <Form.Control
-            placeholder="Enter your email"
-            onBlur={(e) => setEmail(e.target.value)}
-          />
+          <div style={styles.loginSignUpInputs}>
+            <Form.Control
+              placeholder="Enter your email"
+              onBlur={(e) => setEmail(e.target.value)}
+            />
+          </div>
           <FormText class={styles.errorText}>
             {errors().email !== "" ? errors().email : null}
           </FormText>
@@ -64,6 +66,7 @@ export default function LoginForm() {
               type={isShowingPass() ? "input" : "password"}
               placeholder="Enter your password"
               onBlur={(e) => setPassword(e.target.value)}
+              style={{ "max-width": "75%" }}
             />
             <InputGroup.Text onClick={showHidePassword}>
               <>

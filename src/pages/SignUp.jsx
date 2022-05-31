@@ -1,5 +1,6 @@
 import { useNavigate } from "solid-app-router";
 import { useUser } from "../../utils/helpers";
+import Logo from "../components/Logo";
 import SignUpForm from "../components/SignUpForm";
 
 export default function SignUp() {
@@ -9,9 +10,10 @@ export default function SignUp() {
     const navigate = useNavigate();
     navigate("/home");
   }
+
   return (
     <div>
-      <h1>Sign-Up</h1>
+      <Logo />
       <SignUpForm />
     </div>
   );
