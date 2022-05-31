@@ -1,8 +1,10 @@
-import { ListGroup, ListGroupItem } from "solid-bootstrap";
-import { createEffect, createResource, createSignal, from } from "solid-js";
+import { Button, Form, ListGroup, ListGroupItem } from "solid-bootstrap";
+import { createEffect, createResource, createSignal } from "solid-js";
 import { getReq, putReq } from "../../utils/api";
 import { redirect, useUser } from "../../utils/helpers";
 import { useDark } from "./DarkContext";
+import { AiOutlineEdit } from "solid-icons/ai";
+import { TiTickOutline } from "solid-icons/ti";
 import {
   DragDropProvider,
   DragDropSensors,
@@ -19,6 +21,26 @@ const fetchToDos = async () => {
 
 const Sortable = (props) => {
   const sortable = createSortable(props.toDo.arrayIndex, props.toDo);
+  const [isEditing, setIsEditing] = createSignal(false);
+  const [newDesc, setNewDesc] = createSignal("");
+
+  const openEditMode = () => {
+    setIsEditing(true);
+    setNewDesc(props.toDo.description);
+  };
+
+  const editToDoDescription = async () => {
+    props.setToDos(
+      (toDo) => toDo.toDoId === props.toDo.toDoId,
+      "description",
+      newDesc()
+    );
+    const descToPost = newDesc();
+    setIsEditing(false);
+    setNewDesc("");
+    await putReq(`/todo/${props.toDo.toDoId}`, { description: descToPost });
+  };
+
   return (
     // <div
     //   use:sortable
@@ -32,22 +54,55 @@ const Sortable = (props) => {
       class="sortable"
       classList={{ "opacity-25": sortable.isActiveDraggable }}
     >
-      <ListGroupItem
-        as="li"
-        action
-        onClick={() =>
-          updateToDoActive(
-            props.toDo,
-            [props.index()],
-            !props.toDo.isActive,
-            props.setToDos
-          )
-        }
-      >
-        {props.toDo.isActive ? (
-          props.toDo.description
+      <ListGroupItem as="li" action style={{ display: "flex" }}>
+        {isEditing() ? (
+          <>
+            <Form.Control
+              onChange={(e) => setNewDesc(e.target.value)}
+              value={newDesc()}
+            />
+            <Button
+              onClick={editToDoDescription}
+              variant="primary"
+              size="sm"
+              style={{
+                "margin-left": "10px"
+              }}
+            >
+              <TiTickOutline size={30} color="#000000" />
+            </Button>
+          </>
         ) : (
-          <strike>{props.toDo.description}</strike>
+          <>
+            <div
+              onClick={() =>
+                updateToDoActive(
+                  props.toDo,
+                  [props.index()],
+                  !props.toDo.isActive,
+                  props.setToDos
+                )
+              }
+            >
+              {props.toDo.isActive ? (
+                props.toDo.description
+              ) : (
+                <strike>{props.toDo.description}</strike>
+              )}
+            </div>
+            <Button
+              onClick={openEditMode}
+              variant="primary"
+              size="sm"
+              style={{
+                padding: "1px",
+                "padding-bottom": "2px",
+                "margin-left": "10px"
+              }}
+            >
+              <AiOutlineEdit size={20} color="#000000" />
+            </Button>
+          </>
         )}
       </ListGroupItem>
     </div>
