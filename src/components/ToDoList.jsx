@@ -1,10 +1,11 @@
 import { Button, Form, ListGroup, ListGroupItem } from "solid-bootstrap";
 import { createEffect, createResource, createSignal } from "solid-js";
-import { getReq, putReq } from "../../utils/api";
+import { deleteReq, getReq, putReq } from "../../utils/api";
 import { redirect, useUser } from "../../utils/helpers";
 import { useDark } from "./DarkContext";
 import { AiOutlineEdit } from "solid-icons/ai";
 import { TiTickOutline } from "solid-icons/ti";
+import { ImCross } from "solid-icons/im";
 import {
   DragDropProvider,
   DragDropSensors,
@@ -15,14 +16,15 @@ import {
 } from "@thisbeyond/solid-dnd";
 
 const fetchToDos = async () => {
-  const [user, setUser] = useUser();
+  const [user] = useUser();
   return await getReq(`/todo/${user.email}`);
 };
 
-const Sortable = (props) => {
+const ToDoItem = (props) => {
   const sortable = createSortable(props.toDo.arrayIndex, props.toDo);
   const [isEditing, setIsEditing] = createSignal(false);
   const [newDesc, setNewDesc] = createSignal("");
+  const [user] = useUser();
 
   const openEditMode = () => {
     setIsEditing(true);
@@ -41,6 +43,17 @@ const Sortable = (props) => {
     await putReq(`/todo/${props.toDo.toDoId}`, { description: descToPost });
   };
 
+  const deleteToDo = async () => {
+    console.log(props.toDos);
+    const updatedToDos = [...props.toDos];
+    const index = updatedToDos.findIndex(
+      (toDo) => toDo.toDoId === props.toDo.toDoId
+    );
+    updatedToDos.splice(index, 1);
+    props.setToDos(updatedToDos);
+    await deleteReq(`/todo/${props.toDo.toDoId}/t/t`);
+  };
+
   return (
     // <div
     //   use:sortable
@@ -54,7 +67,11 @@ const Sortable = (props) => {
       class="sortable"
       classList={{ "opacity-25": sortable.isActiveDraggable }}
     >
-      <ListGroupItem as="li" action style={{ display: "flex" }}>
+      <ListGroupItem
+        as="li"
+        action
+        style={{ display: "flex", "align-content": "center" }}
+      >
         {isEditing() ? (
           <>
             <Form.Control
@@ -66,7 +83,8 @@ const Sortable = (props) => {
               variant="primary"
               size="sm"
               style={{
-                "margin-left": "10px"
+                "margin-left": "10px",
+                "align-self": "center"
               }}
             >
               <TiTickOutline size={30} color="#000000" />
@@ -97,10 +115,23 @@ const Sortable = (props) => {
               style={{
                 padding: "1px",
                 "padding-bottom": "2px",
-                "margin-left": "10px"
+                "margin-left": "10px",
+                "align-self": "center"
               }}
             >
               <AiOutlineEdit size={20} color="#000000" />
+            </Button>
+            <Button
+              onClick={deleteToDo}
+              variant="danger"
+              size="sm"
+              style={{
+                padding: "3px",
+                "margin-left": "10px",
+                "align-self": "center"
+              }}
+            >
+              <ImCross size={20} color="#FFFFFF" />
             </Button>
           </>
         )}
@@ -172,7 +203,12 @@ export default function ToDoList(props) {
           {/* <ListGroup as="ul"> */}
           <For each={props.toDos}>
             {(toDo, index) => (
-              <Sortable toDo={toDo} index={index} setToDos={props.setToDos} />
+              <ToDoItem
+                toDo={toDo}
+                index={index}
+                toDos={props.toDos}
+                setToDos={props.setToDos}
+              />
             )}
           </For>
         </SortableProvider>

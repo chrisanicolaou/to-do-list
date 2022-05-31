@@ -1,9 +1,10 @@
 import { useNavigate } from "solid-app-router";
-import { Button, Form, FormText } from "solid-bootstrap";
+import { Button, Form, FormText, InputGroup } from "solid-bootstrap";
 import { createSignal, useContext } from "solid-js";
 import { getReq } from "../../utils/api";
 import { checkEmptyFields, setToUserStorage } from "../../utils/helpers";
 import styles from "../App.module.css";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "solid-icons/ai";
 
 export default function LoginForm() {
   const [email, setEmail] = createSignal("");
@@ -12,6 +13,7 @@ export default function LoginForm() {
     password: ""
   });
   const [password, setPassword] = createSignal("");
+  const [isShowingPass, setIsShowingPass] = createSignal(false);
   const navigate = useNavigate();
 
   const onLoginPress = async (e) => {
@@ -38,6 +40,10 @@ export default function LoginForm() {
     navigate("/signup");
   };
 
+  const showHidePassword = () => {
+    setIsShowingPass(!isShowingPass());
+  };
+
   return (
     <div>
       <Form onSubmit={onLoginPress}>
@@ -53,11 +59,22 @@ export default function LoginForm() {
         </Form.Group>
         <Form.Group class="mb-3" controlId="passwordInput">
           <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Enter your password"
-            onBlur={(e) => setPassword(e.target.value)}
-          />
+          <InputGroup>
+            <Form.Control
+              type={isShowingPass() ? "input" : "password"}
+              placeholder="Enter your password"
+              onBlur={(e) => setPassword(e.target.value)}
+            />
+            <InputGroup.Text onClick={showHidePassword}>
+              <>
+                {isShowingPass() ? (
+                  <AiOutlineEyeInvisible size={24} color="#000000" />
+                ) : (
+                  <AiOutlineEye size={24} color="#000000" />
+                )}
+              </>
+            </InputGroup.Text>
+          </InputGroup>
           <FormText class={styles.errorText}>
             {errors().password !== "" ? errors().password : null}
           </FormText>

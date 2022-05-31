@@ -6,6 +6,7 @@ import { redirect, useUser } from "../../utils/helpers";
 import AddToDoForm from "../components/AddToDoForm";
 import SortableTest from "../components/SortableTest";
 import ToDoList from "../components/ToDoList";
+import styles from "../App.module.css";
 
 export default function Home() {
   const navigation = useNavigate();

@@ -1,15 +1,18 @@
 import { useNavigate } from "solid-app-router";
-import { Button, Form, FormText } from "solid-bootstrap";
+import { Button, Form, FormText, InputGroup } from "solid-bootstrap";
 import { createSignal, useContext } from "solid-js";
 import { postReq } from "../../utils/api";
 import styles from "../App.module.css";
 import { checkEmptyFields, setToUserStorage } from "../../utils/helpers";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "solid-icons/ai";
 
 export default function SignUpForm() {
   const [email, setEmail] = createSignal("");
   const [emailErr, setEmailErr] = createSignal("");
   const [password, setPassword] = createSignal("");
   const [confirmPass, setConfirmPass] = createSignal("");
+  const [isShowingPass, setIsShowingPass] = createSignal(false);
+  const [isShowingConfirmPass, setIsShowingConfirmPass] = createSignal(false);
   const [errors, setErrors] = createSignal({
     emailErr: "",
     passwordErr: "",
@@ -63,6 +66,14 @@ export default function SignUpForm() {
     navigate("/");
   };
 
+  const showHidePassword = () => {
+    setIsShowingPass(!isShowingPass());
+  };
+
+  const showHideConfirmPass = () => {
+    setIsShowingConfirmPass(!isShowingConfirmPass());
+  };
+
   return (
     <div>
       <Form onSubmit={onSignUpPress}>
@@ -78,21 +89,43 @@ export default function SignUpForm() {
         </Form.Group>
         <Form.Group class="mb-3" controlId="passwordInput">
           <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Enter your password"
-            onBlur={(e) => setPassword(e.target.value)}
-          />
+          <InputGroup>
+            <Form.Control
+              type={isShowingPass() ? "input" : "password"}
+              placeholder="Enter your password"
+              onBlur={(e) => setPassword(e.target.value)}
+            />
+            <InputGroup.Text onClick={showHidePassword}>
+              <>
+                {isShowingPass() ? (
+                  <AiOutlineEyeInvisible size={24} color="#000000" />
+                ) : (
+                  <AiOutlineEye size={24} color="#000000" />
+                )}
+              </>
+            </InputGroup.Text>
+          </InputGroup>
           <FormText class={styles.errorText}>
             {errors().passwordErr !== "" ? errors().passwordErr : null}
           </FormText>
         </Form.Group>
         <Form.Group class="mb-3" controlId="repeatPasswordInput">
-          <Form.Control
-            type="password"
-            placeholder="Confirm password"
-            onBlur={(e) => setConfirmPass(e.target.value)}
-          />
+          <InputGroup>
+            <Form.Control
+              type={isShowingConfirmPass() ? "input" : "password"}
+              placeholder="Confirm password"
+              onBlur={(e) => setConfirmPass(e.target.value)}
+            />
+            <InputGroup.Text onClick={showHideConfirmPass}>
+              <>
+                {isShowingConfirmPass() ? (
+                  <AiOutlineEyeInvisible size={24} color="#000000" />
+                ) : (
+                  <AiOutlineEye size={24} color="#000000" />
+                )}
+              </>
+            </InputGroup.Text>
+          </InputGroup>
           <FormText class={styles.errorText}>
             {errors().confirmPassErr !== "" ? errors().confirmPassErr : null}
           </FormText>
