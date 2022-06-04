@@ -18,12 +18,6 @@ const fetchToDos = async () => {
   return await getReq(`/todo/${user.email}`);
 };
 
-const updateToDoActive = async (toDo, index, value, setToDos) => {
-  setToDos([index], "isActive", value);
-  console.log(`/todo/${toDo.toDoId}`);
-  await putReq(`/todo/${toDo.toDoId}`, { isActive: value });
-};
-
 export default function ToDoList(props) {
   const [dark] = useDark();
   const [toDosFromApi] = createResource(fetchToDos);
